@@ -1,0 +1,14 @@
+{
+    "image": ["jpg", "jpeg", "png", "gif", "ico"],
+    "text": ["md", "txt", "json"],
+    "document": ["pdf", "doc", "docx", "odt"],
+    "audio": ["mp3", "m4a"],
+    "video": ["mp4", "mkv", "avi"],
+    "installer": ["exe", "msi"],
+    "ebook": ["epub", "mobi", "azw3", "azw"],
+    "link": ["htm", "html"],
+    "compressed": ["zip", "rar", "7z", "tar", "gz"],
+    "3d": ["stl", "obj", "gcode"],
+    "other": ["webm", "ini"],
+    ".": ["."]
+}
