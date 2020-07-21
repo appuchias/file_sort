@@ -33,7 +33,7 @@ class FileSort():
         
         for obj in os.scandir(folder):
             if obj.is_dir():
-                if obj.name not in self.relations.keys() and obj.name != "Folders": # Avoid moving any unwanted folder
+                if obj.name not in self.relations.keys() and obj.name not in ["Folders", "Unknown"]: # Avoid moving any unwanted folder
                     filepath = "\\".join(obj.path.split("\\")[:-1]) + "\\" # Remove the folder name from the path
                     assert path.isdir(filepath) # Avoid errors
                     
