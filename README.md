@@ -6,7 +6,7 @@
 Repo to automatically sort any folder
 
 # Important note
-Currently only Windows is supported due to its weird backslash file system. Unix file systems will be added soon.
+Currently only Windows is supported due to its weird backslash folder system. Unix file system will be added as soon as possible.
 
 # How it works
 Once ran, it will automatically move all the files and folders inside the specified root folder into the specific subfolders depending on their extension (if applicable).

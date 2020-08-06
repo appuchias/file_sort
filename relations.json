@@ -3,11 +3,11 @@
     "Text": ["md", "txt", "rtf", "json", "tex", "wpd"],
     "Document": ["pdf", "doc", "docx", "odt"],
     "Audio": ["mp3", "m4a", "midi", "mid", "ogg", "wav", "wma"],
-    "Video": ["mp4", "mkv", "avi", "3gp", "flv", "mpg", "mpeg", "wmv"],
+    "Video": ["mp4", "mkv", "avi", "3gp", "flv", "mpg", "mpeg", "wmv", "webm"],
     "Executable": ["exe", "msi", "jar", "apk", "bat", "bin", "com", "wsf"],
     "Ebook": ["epub", "mobi", "azw3", "azw"],
     "Link": ["htm", "html"],
-    "Compressed": ["zip", "rar", "7z", "tar", "gz", "deb", "pkg", "rpm", "z"],
+    "Compressed": ["zip", "rar", "7z", "tar", "gz", "deb", "pkg", "rpm", "z", "torrent"],
     "3d": ["stl", "obj", "gcode"],
     "Disk image": ["iso", "toast", "vcd"],
     "Data": ["csv", "dat", "log", "db", "dbf", "sav", "sql", "xml"],
@@ -15,6 +15,5 @@
     "Font": ["fnt", "fon", "otf", "ttf"],
     "Programming": ["c", "h", "class", "cpp", "cs", "java", "pl", "sh", "vb", "py", "pyw", "dart", "ino"],
     "System": ["bak", "cab", "cfg", "cpl", "cur", "dll", "dmp", "drv", "ini", "ink", "sys", "tmp"],
-    "Other": ["webm", "ini"],
     ".": ["."]
 }
