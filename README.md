@@ -1,16 +1,15 @@
 # File sort
-[![MIT license](https://img.shields.io/github/license/appuchias/file_sort?style=flat-square)](https://github.com/appuchias/file_sort/blob/master/LICENSE) 
-[![Author](https://img.shields.io/badge/Project%20by-Appu-9cf?style=flat-square)](https://github.com/appuchias) 
+[![MIT license](https://img.shields.io/github/license/appuchias/file_sort?style=flat-square)](https://github.com/appuchias/file_sort/blob/master/LICENSE)
+[![Author](https://img.shields.io/badge/Project%20by-Appu-9cf?style=flat-square)](https://github.com/appuchias)
 ![Size](https://img.shields.io/github/repo-size/appuchias/file_sort?color=orange&style=flat-square)
 
-Repo to automatically sort any folder
-
-# Important note
-Currently only Windows is supported due to its weird backslash folder system. Unix file system will be added as soon as possible.
+Repo to automatically sort any folder by file types. [Every existent file system supported. Works across different OS]
 
 # How it works
-Once ran, it will automatically move all the files and folders inside the specified root folder into the specific subfolders depending on their extension (if applicable).
-Any changes will be printed to the command prompt.
+It will automatically move all the files and folders inside the specified root folder into the specific subfolders depending on their extension (if applicable).
+It will also move all existing folder inside 'Folder' and remove any empty folder it finds.
+Relations file is filled with extensions. More will be added if needed or requested.
+Every change will be printed to the terminal.
 
 # Setup
 1. Navigate to the folder where you want the repo to be (NOT the folder to be sorted): `cd <path>`

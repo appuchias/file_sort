@@ -1,105 +1,92 @@
 import json
 import os
+import shutil
 import sys
 from os import path
 
+from colorama import Fore
 
-class FileSort:
-    default_folder = ""
+default_folder = "/home/pi/Downloads"
 
-    with open("relations.json") as r:
-        relations = json.load(r)
+# Get extension type relationships
+with open("relations.json") as r:
+    relations = json.load(r)
 
-    # Get everything inside the folder
-    def get_dir_names(self, _dir):
-        return [folder.name for folder in os.scandir(_dir)]
+# Get the file type through its extension
+def get_file_type(file):
+    name = file.name
+    extension = name.split(".")[-1:][0]
 
-    # Get the file type through its extension
-    def get_file_type(self, file):
-        name = file.name
-        extension = name.split(".")[-1:][0]
+    for filetype in relations:
+        if extension in relations[filetype]:
+            return filetype
 
-        for filetype in self.relations:
-            if extension in self.relations[filetype]:
-                return filetype
+    print(f"Unknown ({extension}) - {name}")
+    return "Unknown"
 
-        print(f"Unknown ({extension}) - {name}")
-        return "Unknown"
 
-    # Remove empty directories
-    def get_empty(self, source):
-        assert path.exists(source), "Path not found."
+# Move file or directory
+def moveobj(root, filename, filetype):
+    dest = path.join(root, filetype)
 
-        empty_folders = []
+    # Create the destination subfolder (Only the first time it is needed)
+    if not path.exists(dest):
+        os.mkdir(dest)
 
-        for root, subfolders, files in os.walk(source):
-            if not len(list(os.scandir(root))):
-                print("Removing empty folder: " + root)
-                empty_folders.append(root)
-        
-        return empty_folders
-        
+    # Move the files
+    try:
+        print(filename + " -> " + filetype)
+        shutil.move(path.join(root, filename), path.join(dest, filename))
+    except FileExistsError:
+        print("Error moving " + obj.name + ". Already exists")
 
-    # Main functionality
-    def main(self):
-        if len(sys.argv) > 1:
-            folder = sys.argv[1]
+# Remove empty directories
+def rm_empty(source):
+    assert path.exists(source), "Path not found."
+
+    for root, subfolders, files in os.walk(source):
+        if not len(list(os.scandir(root))):
+            print(Fore.RED + "Removing empty folder: " + root + Fore.WHITE)
+            os.rmdir(root)
+
+
+# New main functionality
+def main():
+    if len(sys.argv) == 2:
+        folder = sys.argv[1]
+    else:
+        assert (len(default_folder) > 0), "Please specify a default folder inside 'improved.pyw'" # Make sure it can run
+        folder = default_folder
+
+    for obj in os.scandir(folder):
+        root = path.dirname(obj.path)
+
+        if obj.is_dir():
+            if obj.name not in relations.keys() and obj.name not in ["Folder", "Unknown"]:
+                moveobj(root, obj.name, "Folder")
+            else:
+                print(Fore.YELLOW + "Omitting '" + obj.name + "' folder" + Fore.WHITE)
+
+        elif obj.is_file():
+            moveobj(root, obj.name, get_file_type(obj))
+
         else:
-            assert (
-                len(self.default_folder) > 0
-            ), "Please specify a default folder inside 'main.py'"  # Make sure it can run
-            folder = self.default_folder
+            print("Weird file found. Not folder neither file. " + obj.name)
 
-        for obj in os.scandir(folder):
-            if obj.is_dir():
-                if obj.name not in self.relations.keys() and obj.name not in [
-                    "Folders",
-                    "Unknown",
-                ]:  # Avoid moving any unwanted folder
-                    filepath = (
-                        "\\".join(obj.path.split("\\")[:-1]) + "\\"
-                    )  # Remove the folder name from the path
-                    assert path.isdir(filepath)  # Avoid errors
+    # Remove empty folders
+    rm_empty(folder)
 
-                    if not os.path.exists(
-                        filepath + "Folders\\"
-                    ):  # Create the "Folders" folder in case it doesn't exist
-                        os.mkdir(filepath + "Folders\\")
+    print(Fore.GREEN + "Job done :)")
 
-                    print(obj.name + " -> " + "Folders\\" + obj.name)
-                    try:
-                        os.rename(
-                            obj.path, filepath + "Folders\\" + obj.name
-                        )  # Move the folder into the "Folders" folder
-                    except FileExistsError:
-                        print("Error moving " + obj.name + ". File already exists")
-
-                else:
-                    print(f'Omitting "{obj.name}" folder')
-
-            elif obj.is_file():
-                filetype = self.get_file_type(obj)
-                filepath = (
-                    "\\".join(obj.path.split("\\")[:-1]) + "\\"
-                )  # Remove the file name from its path
-                assert path.isdir(filepath)  # Avoid errors
-                if not os.path.exists(
-                    filepath + filetype + "\\"
-                ):  # Create the sub folder for the file type
-                    os.mkdir(filepath + filetype + "\\")
-                print(obj.name + " -> " + filetype)
-                try:
-                    os.rename(obj.path, filepath + filetype + "\\" + obj.name)
-                except FileExistsError:
-                        print("Error moving " + obj.name + ". File already exists")
-        
-        empty_folders = self.get_empty(folder)
-
-        for folder in empty_folders:
-            assert path.exists(folder), "Folder does not exist so it cannot be deleted"
-            os.system("rmdir " + folder)
 
 
 if __name__ == "__main__":
-    file_sort = FileSort()
-    file_sort.main()
+    try:
+        print(Fore.RED + "Are you sure you want to run file_sort on folder '" + default_folder + "'?")
+        print(Fore.RED + "Any files with the same names will be overwritten.")
+        print(Fore.CYAN + "(Press ENTER to proceed or CTRL+C to exit)" + Fore.WHITE)
+        input()
+    except KeyboardInterrupt:
+        print(Fore.YELLOW + "\n\n -- Exited -- \n")
+        sys.exit(0)
+    main()
