@@ -13,9 +13,10 @@ Every change will be printed to the terminal.
 
 # Setup
 1. Navigate to the folder where you want the repo to be (NOT the folder to be sorted): `cd <path>`
-2. Clone the repo: `git clone https://github.com/appuchias/file_sort.git`
-3. Navigate into the repo folder: `cd file_sort`
-4. Run the file and add the path instead of `<path>`: `python main.py <path>`
+1. Clone the repo: `git clone https://github.com/appuchias/file_sort.git`
+1. Navigate into the repo folder: `cd file_sort`
+1. Open `main.py` and set the default folder to be ran at
+1. Run the file and add the path instead of `<path>`: `python main.py <path>`
 
 # License
 This project is licensed under the [MIT license](https://github.com/appuchias/file_sort/blob/master/LICENSE).

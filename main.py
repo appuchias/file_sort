@@ -6,7 +6,7 @@ from os import path
 
 from colorama import Fore
 
-default_folder = "/home/pi/Downloads"
+default_folder = ""
 
 # Get extension type relationships
 with open("relations.json") as r:
