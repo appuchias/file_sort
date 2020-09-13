@@ -9,7 +9,7 @@ from colorama import Fore
 default_folder = ""
 
 # Get extension type relationships
-with open("relations.json") as r:
+with open("/home/pi/Programming/Python/file_sort/relations.json") as r:
     relations = json.load(r)
 
 # Get the file type through its extension
@@ -58,6 +58,18 @@ def main():
         assert (len(default_folder) > 0), "Please specify a default folder inside 'improved.pyw'" # Make sure it can run
         folder = default_folder
 
+
+    print(Fore.RED + "Are you sure you want to run file_sort on folder '" + folder + "'?")
+    print(Fore.RED + "Any files with the same names will be overwritten.")
+    print(Fore.CYAN + "(Press ENTER to proceed or CTRL+C to exit)" + Fore.WHITE)
+
+    try:
+        input()
+    except KeyboardInterrupt:
+        print(Fore.YELLOW + "\n\n -- Exited -- \n")
+        sys.exit(0)
+
+
     for obj in os.scandir(folder):
         root = path.dirname(obj.path)
 
@@ -71,7 +83,7 @@ def main():
             moveobj(root, obj.name, get_file_type(obj))
 
         else:
-            print("Weird file found. Not folder neither file. " + obj.name)
+            print(Fore.RED + "Weird file found. Not folder neither file. " + obj.name + Fore.WHITE)
 
     # Remove empty folders
     rm_empty(folder)
@@ -81,12 +93,4 @@ def main():
 
 
 if __name__ == "__main__":
-    try:
-        print(Fore.RED + "Are you sure you want to run file_sort on folder '" + default_folder + "'?")
-        print(Fore.RED + "Any files with the same names will be overwritten.")
-        print(Fore.CYAN + "(Press ENTER to proceed or CTRL+C to exit)" + Fore.WHITE)
-        input()
-    except KeyboardInterrupt:
-        print(Fore.YELLOW + "\n\n -- Exited -- \n")
-        sys.exit(0)
     main()
