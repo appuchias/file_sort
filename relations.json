@@ -8,7 +8,10 @@
         "bmp",
         "svg",
         "tif",
-        "tiff"
+        "tiff",
+        "cr2",
+        "cr3",
+        "dng"
     ],
     "Text": [
         "md",
@@ -31,7 +34,10 @@
         "mid",
         "ogg",
         "wav",
-        "wma"
+        "wma",
+        "aac",
+        "aiff",
+        "flac"
     ],
     "Video": [
         "mp4",
