@@ -85,7 +85,8 @@
     "3d": [
         "stl",
         "obj",
-        "gcode"
+        "gcode",
+        "blend"
     ],
     "Disk image": [
         "iso",

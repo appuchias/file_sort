@@ -3,13 +3,15 @@ import os
 import shutil
 import sys
 from os import path
+from time import sleep
 
-from colorama import Fore
+from colorama import Fore, init
+init()
 
 default_folder = ""
 
 # Get extension type relationships
-with open("/home/pi/Programming/Python/file_sort/relations.json") as r:
+with open("relations.json") as r:
     relations = json.load(r)
 
 # Get the file type through its extension
@@ -38,7 +40,7 @@ def moveobj(root, filename, filetype):
         print(filename + " -> " + filetype)
         shutil.move(path.join(root, filename), path.join(dest, filename))
     except FileExistsError:
-        print("Error moving " + obj.name + ". Already exists")
+        print("Error moving " + filename + ". Already exists")
 
 # Remove empty directories
 def rm_empty(source):
@@ -88,9 +90,10 @@ def main():
     # Remove empty folders
     rm_empty(folder)
 
-    print(Fore.GREEN + "Job done :)")
+    print("\n" + Fore.GREEN + "Job done :)")
 
 
 
 if __name__ == "__main__":
     main()
+    sleep(2)

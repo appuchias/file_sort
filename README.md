@@ -8,14 +8,16 @@ Repo to automatically sort any folder by file types. [Every existent file system
 # How it works
 It will automatically move all the files and folders inside the specified root folder into the specific subfolders depending on their extension (if applicable).
 It will also move all existing folder inside 'Folder' and remove any empty folder it finds.
+
 Relations file is filled with extensions. More will be added if needed or requested.
-Every change will be printed to the terminal.
+
+Every change that happens, file ommited or error found will be printed to the terminal.
 
 # Setup
 1. Navigate to the folder where you want the repo to be (NOT the folder to be sorted): `cd <path>`
 1. Clone the repo: `git clone https://github.com/appuchias/file_sort.git`
 1. Navigate into the repo folder: `cd file_sort`
-1. Open `main.py` and set the default folder to be ran at
+1. Open `main.py` and set the default folder to be ran at.
 1. Run the file and add the path instead of `<path>`: `python main.py <path>`
 
 # License
