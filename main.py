@@ -57,7 +57,7 @@ def main():
     if len(sys.argv) == 2:
         folder = sys.argv[1]
     else:
-        assert (len(default_folder) > 0), "Please specify a default folder inside 'improved.pyw'" # Make sure it can run
+        assert (len(default_folder) > 0), "Please specify a default folder inside the '.py' file." # Make sure it can run
         folder = default_folder
 
 
