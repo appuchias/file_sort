@@ -3,10 +3,10 @@ import os
 import shutil
 import sys
 from os import path
-from time import sleep
 
-from colorama import Fore, init
-init()
+from rich.console import Console
+
+c = Console()
 
 default_folder = ""
 
@@ -23,7 +23,7 @@ def get_file_type(file):
         if extension in relations[filetype]:
             return filetype
 
-    print(f"Unknown ({extension}) - {name}")
+    c.print(f"Unknown ({extension}) - {name}")
     return "Unknown"
 
 
@@ -37,10 +37,11 @@ def moveobj(root, filename, filetype):
 
     # Move the files
     try:
-        print(filename + " -> " + filetype)
+        c.print(f"[underline white]{filename}[/underline] [yellow]-> [bold purple]{filetype}")
         shutil.move(path.join(root, filename), path.join(dest, filename))
     except FileExistsError:
-        print("Error moving " + filename + ". Already exists")
+        c.print("Error moving " + filename + ", file already exists")
+
 
 # Remove empty directories
 def rm_empty(source):
@@ -48,52 +49,55 @@ def rm_empty(source):
 
     for root, subfolders, files in os.walk(source):
         if not len(list(os.scandir(root))):
-            print(Fore.RED + "Removing empty folder: " + root + Fore.WHITE)
+            c.print("[red]Removing empty folder: " + root)
             os.rmdir(root)
 
 
 # New main functionality
-def main():
-    if len(sys.argv) == 2:
-        folder = sys.argv[1]
-    else:
-        assert (len(default_folder) > 0), "Please specify a default folder inside the '.py' file." # Make sure it can run
-        folder = default_folder
+def filesort(folder):
 
-
-    print(Fore.RED + "Are you sure you want to run file_sort on folder '" + folder + "'?")
-    print(Fore.RED + "Any files with the same names will be overwritten.")
-    print(Fore.CYAN + "(Press ENTER to proceed or CTRL+C to exit)" + Fore.WHITE)
+    c.print(
+        f"[bold red]Are you sure you want to run file_sort on folder [/bold red][underline bold yellow]'{folder}'[/underline bold yellow][bold red]?"
+    )
+    c.print("[bold red]Any files with the same names will be [underline]overwritten[/underline].")
+    c.print("[bold light blue]Empty folders will also be removed")
+    c.print("[cyan](Press ENTER to proceed or CTRL+C to exit)")
 
     try:
         input()
     except KeyboardInterrupt:
-        print(Fore.YELLOW + "\n\n -- Exited -- \n")
+        c.print("[yellow] -- Exited --\n")
         sys.exit(0)
-
 
     for obj in os.scandir(folder):
         root = path.dirname(obj.path)
 
         if obj.is_dir():
-            if obj.name not in relations.keys() and obj.name not in ["Folder", "Unknown"]:
+            if obj.name not in relations.keys():
                 moveobj(root, obj.name, "Folder")
             else:
-                print(Fore.YELLOW + "Omitting '" + obj.name + "' folder" + Fore.WHITE)
+                c.print(f"[yellow]Omitting '{obj.name}' folder")
 
         elif obj.is_file():
             moveobj(root, obj.name, get_file_type(obj))
 
-        else:
-            print(Fore.RED + "Weird file found. Not folder neither file. " + obj.name + Fore.WHITE)
+        else:  # Catch exception
+            c.print("[bold red]Weird file found. Not folder neither file. ->" + obj.name)
+            sys.exit(0)
 
     # Remove empty folders
     rm_empty(folder)
 
-    print("\n" + Fore.GREEN + "Job done :)")
-
+    c.print("\n[dim green]Job done :)")
 
 
 if __name__ == "__main__":
-    main()
-    sleep(2)
+    if len(sys.argv) == 2:
+        folder = sys.argv[1]
+    else:
+        assert (
+            len(default_folder) > 0
+        ), "Please specify a default folder inside the '.py' file."  # Make sure it can run
+        folder = default_folder
+
+    filesort(folder)
