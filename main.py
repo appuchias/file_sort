@@ -93,7 +93,7 @@ def filesort(folder: str, relations: dict) -> int:
             moveobj(root, obj.name, filetype)
 
         else:  # Catch exception
-            c.print("[bold red]Weird file found. Not folder neither file. ->" + obj.name)
+            c.print("[bold red underline]Weird file found. Not folder neither file. ->" + obj.name)
             raise SystemExit(0)
 
     # Remove empty folders
