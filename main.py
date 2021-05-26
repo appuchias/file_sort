@@ -42,7 +42,7 @@ def moveobj(root, filename, filetype) -> None:
 
     # Move the files
     try:
-        c.print(f"[underline white]{filename}[/underline] [yellow]-> [bold purple]{filetype}")
+        c.print(f"[underline white]{filename}[/underline white] [yellow]-> [bold purple]{filetype}")
         shutil.move(path.join(root, filename), path.join(dest, filename))
     except FileExistsError:
         c.print("Error moving " + filename + ", file already exists")
@@ -52,10 +52,16 @@ def moveobj(root, filename, filetype) -> None:
 def rm_empty(source):
     assert path.exists(source), "Path not found."
 
-    for root, subfolders, files in os.walk(source):
-        if not len(list(os.scandir(root))):
-            c.print("[red]Removing empty folder: " + root)
-            os.rmdir(root)
+    done = False
+
+    while not done:
+        for root, subfolders, files in os.walk(source):
+            if not len(list(os.scandir(root))):
+                c.print("[red]Removing empty folder: " + root)
+                os.rmdir(root)
+                break
+        else:
+            done = True
 
 
 # New main functionality
@@ -65,13 +71,12 @@ def filesort(folder: str, relations: dict) -> int:
         f"[bold red]Are you sure you want to run file_sort on folder [/bold red][underline bold yellow]'{folder}'[/underline bold yellow][bold red]?"
     )
     c.print("[bold red]Any files with the same names will be [underline]overwritten[/underline].")
-    c.print("[bold light blue]Empty folders will also be removed")
     c.print("[cyan](Press ENTER to proceed or CTRL+C to exit)")
 
     try:
-        input()
+        input("")
     except KeyboardInterrupt:
-        c.print("[yellow] -- Exited --\n")
+        c.print("[yellow] -- Exited --")
         raise SystemExit(0)
 
     for obj in os.scandir(folder):
@@ -92,6 +97,14 @@ def filesort(folder: str, relations: dict) -> int:
             raise SystemExit(0)
 
     # Remove empty folders
+    c.print("[bold blue]All files were sorted")
+    c.print("[bold blue]Empty folders will now be removed")
+    c.print("[cyan](Press ENTER to proceed or CTRL+C to exit)")
+    try:
+        input("")
+    except KeyboardInterrupt:
+        raise SystemExit(0)
+
     rm_empty(folder)
 
     return 0
@@ -116,4 +129,4 @@ if __name__ == "__main__":
     relations = get_relations(rel_file)
 
     if not filesort(folder, relations):
-        c.print("\n[dim green]Job done :)")
+        c.print("[dim green]Job done :)")
