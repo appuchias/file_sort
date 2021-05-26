@@ -19,8 +19,8 @@ def get_relations(filepath: str) -> dict:
 
 
 # Get the file type through its extension
-def get_file_type(file):
-    name = file.name
+def get_file_type(fileobj, relations: dict) -> str:
+    name = fileobj.name
     extension = name.split(".")[-1:][0]
 
     for filetype in relations:
@@ -28,11 +28,12 @@ def get_file_type(file):
             return filetype
 
     c.print(f"Unknown ({extension}) - {name}")
+
     return "Unknown"
 
 
 # Move file or directory
-def moveobj(root, filename, filetype):
+def moveobj(root, filename, filetype) -> None:
     dest = path.join(root, filetype)
 
     # Create the destination subfolder (Only the first time it is needed)
@@ -58,7 +59,7 @@ def rm_empty(source):
 
 
 # New main functionality
-def filesort(folder):
+def filesort(folder: str, relations: dict) -> int:
 
     c.print(
         f"[bold red]Are you sure you want to run file_sort on folder [/bold red][underline bold yellow]'{folder}'[/underline bold yellow][bold red]?"
@@ -71,37 +72,48 @@ def filesort(folder):
         input()
     except KeyboardInterrupt:
         c.print("[yellow] -- Exited --\n")
-        sys.exit(0)
+        raise SystemExit(0)
 
     for obj in os.scandir(folder):
         root = path.dirname(obj.path)
 
         if obj.is_dir():
-            if obj.name not in relations.keys():
+            if obj.name not in relations.keys():  # Avoid moving own folders
                 moveobj(root, obj.name, "Folder")
             else:
                 c.print(f"[yellow]Omitting '{obj.name}' folder")
 
         elif obj.is_file():
-            moveobj(root, obj.name, get_file_type(obj))
+            filetype = get_file_type(obj, relations)
+            moveobj(root, obj.name, filetype)
 
         else:  # Catch exception
             c.print("[bold red]Weird file found. Not folder neither file. ->" + obj.name)
-            sys.exit(0)
+            raise SystemExit(0)
 
     # Remove empty folders
     rm_empty(folder)
 
-    c.print("\n[dim green]Job done :)")
+    return 0
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        folder = sys.argv[1]
-    else:
-        assert (
-            len(default_folder) > 0
-        ), "Please specify a default folder inside the '.py' file."  # Make sure it can run
-        folder = default_folder
+    default_folder = os.getcwd()
 
-    filesort(folder)
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-p", "--path", help="Path to run the script on", default=default_folder)
+    parser.add_argument(
+        "-f",
+        "--file",
+        help="Path to the relations file (Defaults to project's folder)",
+        default=path.join(os.getcwd(), "relations.json"),
+    )
+
+    args = parser.parse_args()
+    folder, rel_file = args.path, args.file
+
+    relations = get_relations(rel_file)
+
+    if not filesort(folder, relations):
+        c.print("\n[dim green]Job done :)")
