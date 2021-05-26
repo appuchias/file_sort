@@ -23,8 +23,12 @@
     ],
     "Document": [
         "pdf",
-        "doc",
         "docx",
+        "doc",
+        "xlsx",
+        "xsl",
+        "pptx",
+        "ppt",
         "odt"
     ],
     "Audio": [
@@ -76,6 +80,7 @@
         "7z",
         "tar",
         "gz",
+        "xz",
         "deb",
         "pkg",
         "rpm",
@@ -145,7 +150,6 @@
         "sys",
         "tmp"
     ],
-    "": [
-        ""
-    ]
+    "Folder": [],
+    "Unknown": []
 }
