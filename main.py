@@ -8,11 +8,15 @@ from rich.console import Console
 
 c = Console()
 
-default_folder = ""
 
-# Get extension type relationships
-with open("relations.json") as r:
-    relations = json.load(r)
+# Get the relations file from any path
+def get_relations(filepath: str) -> dict:
+    assert path.exists(filepath), "Specified relations file does not exist"
+    with open(filepath) as r:
+        relations = json.load(r)
+
+    return relations
+
 
 # Get the file type through its extension
 def get_file_type(file):
