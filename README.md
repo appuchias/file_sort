@@ -4,7 +4,7 @@
 [![Author](https://img.shields.io/badge/Project%20by-Appu-9cf?style=flat-square)](https://github.com/appuchias)
 ![Size](https://img.shields.io/github/repo-size/appuchias/file_sort?color=orange&style=flat-square)
 
-Repo to automatically sort any folder by file types. **Untested for half a year, I have improved my way of writing code so this can be improved. It's in my to-do list**
+Repo to automatically sort any folder by file types. **Untested in half a year, I have improved my way of writing code so this can be better. It's in my to-do list**
 
 ## How it works
 
